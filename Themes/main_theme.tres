@@ -1,8 +1,10 @@
 [gd_resource type="Theme" format=3 uid="uid://bsy13godkubmb"]
 
 [resource]
+Button/font_sizes/font_size = 22
 Label/font_sizes/font_size = 20
 MarginContainer/constants/margin_bottom = 10
 MarginContainer/constants/margin_left = 10
 MarginContainer/constants/margin_right = 10
 MarginContainer/constants/margin_top = 10
+OptionButton/font_sizes/font_size = 22

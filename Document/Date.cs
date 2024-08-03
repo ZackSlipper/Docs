@@ -4,11 +4,11 @@ namespace Docs.Document;
 
 public class Date
 {
-    public int Year { get; }
-	public int Month { get; }
-	public int Day { get; }
+    public int Year { get; set; }
+	public int Month { get; set; }
+	public int Day { get; set; }
 
-	public bool FullMonthRange { get; }
+	public bool FullMonthRange { get; set; }
 
 	public Date(int year, int month, bool fullMonthRange = false)
 	{
