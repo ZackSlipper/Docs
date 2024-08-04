@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://ba4vr0xh408if"]
+[gd_scene load_steps=8 format=3 uid="uid://ba4vr0xh408if"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_862cu"]
 [ext_resource type="Theme" uid="uid://bsy13godkubmb" path="res://Themes/main_theme.tres" id="2_frg3k"]
 [ext_resource type="PackedScene" uid="uid://dvl3rjr5kh36q" path="res://Prefabs/view.tscn" id="2_k15nl"]
+[ext_resource type="Script" path="res://Views/ViewController.cs" id="2_sct2l"]
+[ext_resource type="Script" path="res://Application/Global.cs" id="2_vydil"]
 [ext_resource type="Script" path="res://Views/MainMenuView.cs" id="3_ixi2l"]
 [ext_resource type="Texture2D" uid="uid://05cg4qpbcnn6" path="res://icon.png" id="4_npybf"]
 
@@ -15,13 +17,20 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_862cu")
 
-[node name="ViewController" type="Control" parent="."]
+[node name="Global" type="Node" parent="."]
+script = ExtResource("2_vydil")
+
+[node name="InvoiceController" type="Node" parent="."]
+
+[node name="ViewController" type="Control" parent="." node_paths=PackedStringArray("viewList")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("2_sct2l")
+viewList = [NodePath("MainMenu_View")]
 
 [node name="MainMenu_View" parent="ViewController" node_paths=PackedStringArray("invoiceOptions", "generateButton", "editButton", "newButton", "exitButton") instance=ExtResource("2_k15nl")]
 custom_minimum_size = Vector2(600, 800)
@@ -32,6 +41,7 @@ generateButton = NodePath("MarginContainer/ScrollContainer/Content_VBoxContainer
 editButton = NodePath("MarginContainer/ScrollContainer/Content_VBoxContainer/Edit_Button")
 newButton = NodePath("MarginContainer/ScrollContainer/Content_VBoxContainer/New_Button")
 exitButton = NodePath("MarginContainer/ScrollContainer/Content_VBoxContainer/Exit_Button")
+name = "main_menu"
 
 [node name="Content_VBoxContainer" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer" index="0"]
 theme_override_constants/separation = 10

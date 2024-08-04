@@ -4,7 +4,7 @@ namespace Docs.Document;
 
 public class Date
 {
-    public int Year { get; set; }
+	public int Year { get; set; }
 	public int Month { get; set; }
 	public int Day { get; set; }
 
@@ -16,6 +16,14 @@ public class Date
 		Month = month;
 		Day = DateTime.DaysInMonth(year, month);
 		FullMonthRange = fullMonthRange;
+	}
+
+	public Date(int year, int month, int day)
+	{
+		Year = year;
+		Month = month;
+		Day = day;
+		FullMonthRange = false;
 	}
 
 	public override string ToString() =>

@@ -1,15 +1,20 @@
-using Godot;
-using System;
+using System.Collections.Generic;
+using Docs.Document;
 
-public partial class InvoiceData : Node
+namespace Docs.Invoice;
+
+public class InvoiceData
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
+	public string ShortName { get; set; }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+	public Date StartDate { get; set; }
+	public int StartSeries { get; set; }
+
+	public Date LastDate { get; set; }
+
+	public bool UsingDefaultServices { get; set; }
+	public List<Service> DefaultServices { get; set; } = new();
+	public List<Service> SelectableServices { get; set; } = new();
+
+	public DocData OtherData { get; set; }
 }
