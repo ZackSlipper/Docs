@@ -3,7 +3,7 @@ using Godot;
 
 namespace Docs.Views;
 
-public partial class MainMenuView : Node
+public partial class MainMenuView : View
 {
 	[Export] private OptionButton invoiceOptions;
 	[Export] private Button generateButton;
