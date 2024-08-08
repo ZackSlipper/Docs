@@ -1,12 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://ba4vr0xh408if"]
+[gd_scene load_steps=15 format=3 uid="uid://ba4vr0xh408if"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_862cu"]
 [ext_resource type="Theme" uid="uid://bsy13godkubmb" path="res://Themes/main_theme.tres" id="2_frg3k"]
 [ext_resource type="PackedScene" uid="uid://dvl3rjr5kh36q" path="res://Prefabs/view.tscn" id="2_k15nl"]
 [ext_resource type="Script" path="res://Views/ViewController.cs" id="2_sct2l"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_vydil"]
+[ext_resource type="Script" path="res://Invoice/InvoiceController.cs" id="3_hi4ni"]
 [ext_resource type="Script" path="res://Views/MainMenuView.cs" id="3_ixi2l"]
 [ext_resource type="Texture2D" uid="uid://05cg4qpbcnn6" path="res://icon.png" id="4_npybf"]
+[ext_resource type="PackedScene" uid="uid://cybs2pqc7rhqt" path="res://Prefabs/button.tscn" id="7_lg8p5"]
+[ext_resource type="Script" path="res://Views/InfoView.cs" id="8_8cj88"]
+[ext_resource type="Script" path="res://Views/ErrorView.cs" id="8_k5tr7"]
+[ext_resource type="Script" path="res://Views/EditInvoiceDataView.cs" id="11_0kyum"]
+[ext_resource type="Script" path="res://Views/EditInvoiceServicesView.cs" id="13_ko45p"]
+[ext_resource type="PackedScene" uid="uid://sc0w566xn61a" path="res://Prefabs/service_item.tscn" id="14_oydix"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -17,12 +24,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_862cu")
 
-[node name="Global" type="Node" parent="."]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("viewController", "invoiceController")]
 script = ExtResource("2_vydil")
+viewController = NodePath("../ViewController")
+invoiceController = NodePath("../InvoiceController")
 
 [node name="InvoiceController" type="Node" parent="."]
+script = ExtResource("3_hi4ni")
 
-[node name="ViewController" type="Control" parent="." node_paths=PackedStringArray("viewList")]
+[node name="ViewController" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,76 +40,83 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_sct2l")
-viewList = [NodePath("MainMenu_View")]
 
 [node name="MainMenu_View" parent="ViewController" node_paths=PackedStringArray("invoiceOptions", "generateButton", "editButton", "newButton", "exitButton") instance=ExtResource("2_k15nl")]
 custom_minimum_size = Vector2(600, 800)
 layout_mode = 1
 script = ExtResource("3_ixi2l")
-invoiceOptions = NodePath("MarginContainer/ScrollContainer/Content_VBoxContainer/OptionButton")
-generateButton = NodePath("MarginContainer/ScrollContainer/Content_VBoxContainer/Generate_Button")
-editButton = NodePath("MarginContainer/ScrollContainer/Content_VBoxContainer/Edit_Button")
-newButton = NodePath("MarginContainer/ScrollContainer/Content_VBoxContainer/New_Button")
-exitButton = NodePath("MarginContainer/ScrollContainer/Content_VBoxContainer/Exit_Button")
+invoiceOptions = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Invoice/Invoice_OptionButton")
+generateButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Generate_Button/Button")
+editButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Edit_Button/Button")
+newButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/New_Button/Button")
+exitButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button/Button")
 name = "main_menu"
 
-[node name="Content_VBoxContainer" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer" index="0"]
-theme_override_constants/separation = 10
-
-[node name="Title_Label" type="Label" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="0"]
+[node name="Title_Label" type="Label" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
 layout_mode = 2
-theme = ExtResource("2_frg3k")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 40
 text = "Sąskaitos Faktūros"
 horizontal_alignment = 1
 
-[node name="Separator" type="ColorRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="1"]
+[node name="Separator" type="ColorRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="OptionButton" type="OptionButton" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="2"]
+[node name="Invoice" type="HBoxContainer" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="2"]
 layout_mode = 2
-focus_mode = 0
-theme = ExtResource("2_frg3k")
+
+[node name="Spacer" type="Control" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Invoice"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="Invoice_OptionButton" type="OptionButton" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Invoice"]
+layout_mode = 2
+size_flags_horizontal = 3
 alignment = 1
 selected = 0
-item_count = 2
-popup/item_0/text = "Invoice 1"
-popup/item_1/text = "Invoice 2"
-popup/item_1/id = 1
+item_count = 1
+popup/item_0/text = "Invoice 0"
 
-[node name="Generate_Button" type="Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="3"]
-custom_minimum_size = Vector2(0, 100)
+[node name="Spacer2" type="Control" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Invoice"]
 layout_mode = 2
-focus_mode = 0
-theme = ExtResource("2_frg3k")
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="Generate_Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="3" instance=ExtResource("7_lg8p5")]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Generate_Button" index="1"]
 theme_override_font_sizes/font_size = 30
 text = "Ruošti"
 
-[node name="Edit_Button" type="Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="4"]
+[node name="Edit_Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="4" instance=ExtResource("7_lg8p5")]
 layout_mode = 2
-focus_mode = 0
-theme = ExtResource("2_frg3k")
+
+[node name="Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Edit_Button" index="1"]
 text = "Koreguoti"
 
-[node name="Separator2" type="ColorRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="5"]
+[node name="Separator2" type="ColorRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="5"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="New_Button" type="Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="6"]
+[node name="New_Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="6" instance=ExtResource("7_lg8p5")]
 layout_mode = 2
-focus_mode = 0
-theme = ExtResource("2_frg3k")
+
+[node name="Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/New_Button" index="1"]
 text = "Nauja"
 
-[node name="Separator3" type="ColorRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="7"]
+[node name="Separator3" type="ColorRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="7"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="TextureRect" type="TextureRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="8"]
+[node name="TextureRect" type="TextureRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="8"]
+modulate = Color(0.5, 0.5, 0.5, 1)
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
@@ -108,15 +125,905 @@ texture = ExtResource("4_npybf")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Separator4" type="ColorRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="9"]
+[node name="Separator4" type="ColorRect" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="9"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="Exit_Button" type="Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/Content_VBoxContainer" index="10"]
+[node name="Exit_Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="10" instance=ExtResource("7_lg8p5")]
 layout_mode = 2
-focus_mode = 0
-theme = ExtResource("2_frg3k")
+
+[node name="Button" parent="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button" index="1"]
 text = "Uždaryti"
 
+[node name="Info_View" parent="ViewController" node_paths=PackedStringArray("titleLabel", "contentLabel", "okButton") instance=ExtResource("2_k15nl")]
+visible = false
+layout_mode = 1
+script = ExtResource("8_8cj88")
+titleLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Title_Label")
+contentLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Content_Label")
+okButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Ok_Button/Button")
+name = "info"
+
+[node name="Content_VBoxContainer" parent="ViewController/Info_View/MarginContainer/ScrollContainer/MarginContainer" index="0"]
+alignment = 1
+
+[node name="Title_Label" type="Label" parent="ViewController/Info_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "[Title]"
+horizontal_alignment = 1
+
+[node name="Content_Label" type="Label" parent="ViewController/Info_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+text = "[Content]"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Ok_Button" parent="ViewController/Info_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="2" instance=ExtResource("7_lg8p5")]
+layout_mode = 2
+
+[node name="Button" parent="ViewController/Info_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Ok_Button" index="1"]
+text = "Gerai"
+
+[node name="Error_View" parent="ViewController" node_paths=PackedStringArray("contentLabel", "backButton") instance=ExtResource("2_k15nl")]
+visible = false
+layout_mode = 1
+script = ExtResource("8_k5tr7")
+contentLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Content_Label")
+backButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button/Button")
+name = "error"
+
+[node name="Content_VBoxContainer" parent="ViewController/Error_View/MarginContainer/ScrollContainer/MarginContainer" index="0"]
+alignment = 1
+
+[node name="Title_Label" type="Label" parent="ViewController/Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Klaida!"
+horizontal_alignment = 1
+
+[node name="Content_Label" type="Label" parent="ViewController/Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+text = "[Content]"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Back_Button" parent="ViewController/Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="2" instance=ExtResource("7_lg8p5")]
+layout_mode = 2
+
+[node name="Button" parent="ViewController/Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button" index="1"]
+text = "Atgal"
+
+[node name="Critical_Error_View" parent="ViewController" node_paths=PackedStringArray("contentLabel", "backButton") instance=ExtResource("2_k15nl")]
+visible = false
+layout_mode = 1
+script = ExtResource("8_k5tr7")
+contentLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Content_Label")
+backButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button/Button")
+criticalError = true
+name = "critical_error"
+
+[node name="Content_VBoxContainer" parent="ViewController/Critical_Error_View/MarginContainer/ScrollContainer/MarginContainer" index="0"]
+alignment = 1
+
+[node name="Title_Label" type="Label" parent="ViewController/Critical_Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Kritinė Klaida!"
+horizontal_alignment = 1
+
+[node name="Content_Label" type="Label" parent="ViewController/Critical_Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+text = "[Content]"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Exit_Button" parent="ViewController/Critical_Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="2" instance=ExtResource("7_lg8p5")]
+layout_mode = 2
+
+[node name="Button" parent="ViewController/Critical_Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button" index="1"]
+text = "Uždaryti"
+
+[node name="EditInvoiceData_View" parent="ViewController" node_paths=PackedStringArray("shortNameLineEdit", "startYearLineEdit", "startMonthOptionButton", "startSeriesLineEdit", "sellerNameLineEdit", "sellerPersonalNoLineEdit", "sellerAddressCityLineEdit", "sellerAddressStreetLineEdit", "sellerAddressBuildingLineEdit", "sellerBankAccNoLineEdit", "sellerActivityCertificateNoLineEdit", "buyerNameLineEdit", "buyerAddressCityLineEdit", "buyerAddressStreetLineEdit", "buyerAddressBuildingLineEdit", "buyerCompanyCodeLineEdit", "selectableServicesButton", "servicesButton", "backButton", "saveButton", "scrollContainer") instance=ExtResource("2_k15nl")]
+visible = false
+layout_mode = 1
+script = ExtResource("11_0kyum")
+shortNameLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ShortName_HBoxContainer/LineEdit")
+startYearLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateYear_HBoxContainer/LineEdit")
+startMonthOptionButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateMonth_HBoxContainer/OptionButton")
+startSeriesLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartSeries_HBoxContainer/LineEdit")
+sellerNameLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerName_HBoxContainer/LineEdit")
+sellerPersonalNoLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerPersonalNo_HBoxContainer/LineEdit")
+sellerAddressCityLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressCity_HBoxContainer/LineEdit")
+sellerAddressStreetLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressStreet_HBoxContainer/LineEdit")
+sellerAddressBuildingLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressBuilding_HBoxContainer/LineEdit")
+sellerBankAccNoLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerBankNo_HBoxContainer/LineEdit")
+sellerActivityCertificateNoLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerActivityCertificateNo_HBoxContainer/LineEdit")
+buyerNameLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerName_HBoxContainer2/LineEdit")
+buyerAddressCityLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressCity_HBoxContainer2/LineEdit")
+buyerAddressStreetLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressStreet_HBoxContainer2/LineEdit")
+buyerAddressBuildingLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressBuilding_HBoxContainer2/LineEdit")
+buyerCompanyCodeLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerCompanyCode_HBoxContainer/LineEdit")
+selectableServicesButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer/CheckButton")
+servicesButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button/Button")
+backButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Back_Button")
+saveButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Save_Button")
+scrollContainer = NodePath("MarginContainer/ScrollContainer")
+name = "edit_invoice_data"
+
+[node name="Title_Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+theme_override_font_sizes/font_size = 30
+text = "Sąskaitos Faktūros Duomenys"
+horizontal_alignment = 1
+
+[node name="Separator" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="ShortName_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ShortName_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Trumpas pavadinimas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ShortName_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="Separator2" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="3"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="StartDateYear_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateYear_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Dokumento Pradžios Metai:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateYear_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+placeholder_text = "2000"
+max_length = 4
+virtual_keyboard_type = 2
+
+[node name="StartDateMonth_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="5"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateMonth_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Dokumento Pradžios Mėnuo:"
+autowrap_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateMonth_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 12
+popup/item_0/text = "Sausis"
+popup/item_1/text = "Vasaris"
+popup/item_1/id = 1
+popup/item_2/text = "Kovas"
+popup/item_2/id = 2
+popup/item_3/text = "Balandis"
+popup/item_3/id = 3
+popup/item_4/text = "Gėgužė"
+popup/item_4/id = 4
+popup/item_5/text = "Birželis"
+popup/item_5/id = 5
+popup/item_6/text = "Liepa"
+popup/item_6/id = 6
+popup/item_7/text = "Rugpjūtis"
+popup/item_7/id = 7
+popup/item_8/text = "Rugsėjis"
+popup/item_8/id = 8
+popup/item_9/text = "Spalis"
+popup/item_9/id = 9
+popup/item_10/text = "Lapkritis"
+popup/item_10/id = 10
+popup/item_11/text = "Gruodis"
+popup/item_11/id = 11
+
+[node name="StartSeries_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="6"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartSeries_HBoxContainer"]
+custom_minimum_size = Vector2(1, 59)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Dokumento Serijos Pradžios Numeris:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartSeries_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+placeholder_text = "1"
+max_length = 4
+virtual_keyboard_type = 2
+
+[node name="Separator3" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="7"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="SellerTitle_Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="8"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+theme_override_font_sizes/font_size = 30
+text = "Pardavėjas"
+horizontal_alignment = 1
+
+[node name="SellerName_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="9"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerName_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vardas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerName_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerPersonalNo_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="10"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerPersonalNo_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Asmens Kodas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerPersonalNo_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerAddressCity_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="11"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressCity_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Miestas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressCity_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerAddressStreet_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="12"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressStreet_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Gatvė:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressStreet_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerAddressBuilding_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="13"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressBuilding_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Pastatas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressBuilding_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerBankNo_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="14"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerBankNo_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Banko Numeris:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerBankNo_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerActivityCertificateNo_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="15"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerActivityCertificateNo_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Individualios Veiklos Pažymėjimo Numeris:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerActivityCertificateNo_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="Separator4" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="16"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="BuyerTitle_Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="17"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+theme_override_font_sizes/font_size = 30
+text = "Pirkėjas"
+horizontal_alignment = 1
+
+[node name="BuyerName_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="18"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerName_HBoxContainer2"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pavadinimas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerName_HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="BuyerAddressCity_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="19"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressCity_HBoxContainer2"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Miestas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressCity_HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="BuyerAddressStreet_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="20"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressStreet_HBoxContainer2"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Gatvė:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressStreet_HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="BuyerAddressBuilding_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="21"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressBuilding_HBoxContainer2"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Pastatas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressBuilding_HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="BuyerCompanyCode_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="22"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerCompanyCode_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Įmonės Kodas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerCompanyCode_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="Separator5" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="23"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="ViewController_NewInvoiceSelectableServices_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="24"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer"]
+custom_minimum_size = Vector2(278, 1)
+layout_mode = 2
+text = "Pasirenkamos Paslaugos:"
+autowrap_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer"]
+layout_mode = 2
+
+[node name="Services_Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="25" instance=ExtResource("7_lg8p5")]
+layout_mode = 2
+
+[node name="Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button" index="1"]
+text = "Paslaugos"
+
+[node name="Separator6" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="26"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="27"]
+layout_mode = 2
+
+[node name="Save_Button" type="Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+text = "Išsaugoti"
+
+[node name="Back_Button" type="Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+text = "Atgal"
+
+[node name="EditInvoiceServices_View" parent="ViewController" node_paths=PackedStringArray("addServiceButton", "backButton", "scrollContainer", "serviceItemParent") instance=ExtResource("2_k15nl")]
+visible = false
+layout_mode = 1
+script = ExtResource("13_ko45p")
+addServiceButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Add_Button/Button")
+backButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button/Button")
+scrollContainer = NodePath("MarginContainer/ScrollContainer")
+serviceItemPrefab = ExtResource("14_oydix")
+serviceItemParent = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/PanelContainer/MarginContainer/VBoxContainer")
+name = "edit_invoice_services"
+
+[node name="Title_Label" type="Label" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Paslaugos"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Add_Button" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="2" instance=ExtResource("7_lg8p5")]
+layout_mode = 2
+
+[node name="Button" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Add_Button" index="1"]
+text = "Pridėti Naują Paslaugą"
+
+[node name="Back_Button" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="3" instance=ExtResource("7_lg8p5")]
+layout_mode = 2
+
+[node name="Button" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button" index="1"]
+text = "Atgal"
+
+[node name="GenerateInvoice_View" parent="ViewController" node_paths=PackedStringArray("scrollContainer") instance=ExtResource("2_k15nl")]
+visible = false
+layout_mode = 1
+script = ExtResource("11_0kyum")
+scrollContainer = NodePath("MarginContainer/ScrollContainer")
+name = "edit_invoice_data"
+
+[node name="Title_Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+theme_override_font_sizes/font_size = 30
+text = "Sąskaitos Faktūros Duomenys"
+horizontal_alignment = 1
+
+[node name="Separator" type="ColorRect" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="ShortName_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ShortName_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Trumpas pavadinimas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ShortName_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="Separator2" type="ColorRect" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="3"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="StartDateYear_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateYear_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Dokumento Pradžios Metai:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateYear_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+placeholder_text = "2000"
+max_length = 4
+virtual_keyboard_type = 2
+
+[node name="StartDateMonth_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="5"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateMonth_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Dokumento Pradžios Mėnuo:"
+autowrap_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartDateMonth_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 12
+popup/item_0/text = "Sausis"
+popup/item_1/text = "Vasaris"
+popup/item_1/id = 1
+popup/item_2/text = "Kovas"
+popup/item_2/id = 2
+popup/item_3/text = "Balandis"
+popup/item_3/id = 3
+popup/item_4/text = "Gėgužė"
+popup/item_4/id = 4
+popup/item_5/text = "Birželis"
+popup/item_5/id = 5
+popup/item_6/text = "Liepa"
+popup/item_6/id = 6
+popup/item_7/text = "Rugpjūtis"
+popup/item_7/id = 7
+popup/item_8/text = "Rugsėjis"
+popup/item_8/id = 8
+popup/item_9/text = "Spalis"
+popup/item_9/id = 9
+popup/item_10/text = "Lapkritis"
+popup/item_10/id = 10
+popup/item_11/text = "Gruodis"
+popup/item_11/id = 11
+
+[node name="StartSeries_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="6"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartSeries_HBoxContainer"]
+custom_minimum_size = Vector2(1, 59)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Dokumento Serijos Pradžios Numeris:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/StartSeries_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+placeholder_text = "1"
+max_length = 4
+virtual_keyboard_type = 2
+
+[node name="Separator3" type="ColorRect" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="7"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="SellerTitle_Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="8"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+theme_override_font_sizes/font_size = 30
+text = "Pardavėjas"
+horizontal_alignment = 1
+
+[node name="SellerName_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="9"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerName_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vardas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerName_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerPersonalNo_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="10"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerPersonalNo_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Asmens Kodas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerPersonalNo_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerAddressCity_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="11"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressCity_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Miestas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressCity_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerAddressStreet_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="12"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressStreet_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Gatvė:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressStreet_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerAddressBuilding_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="13"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressBuilding_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Pastatas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressBuilding_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerBankNo_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="14"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerBankNo_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Banko Numeris:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerBankNo_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerActivityCertificateNo_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="15"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerActivityCertificateNo_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Individualios Veiklos Pažymėjimo Numeris:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerActivityCertificateNo_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="Separator4" type="ColorRect" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="16"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="BuyerTitle_Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="17"]
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+theme_override_font_sizes/font_size = 30
+text = "Pirkėjas"
+horizontal_alignment = 1
+
+[node name="BuyerName_HBoxContainer2" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="18"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerName_HBoxContainer2"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pavadinimas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerName_HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="BuyerAddressCity_HBoxContainer2" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="19"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressCity_HBoxContainer2"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Miestas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressCity_HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="BuyerAddressStreet_HBoxContainer2" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="20"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressStreet_HBoxContainer2"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Gatvė:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressStreet_HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="BuyerAddressBuilding_HBoxContainer2" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="21"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressBuilding_HBoxContainer2"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Pastatas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressBuilding_HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="BuyerCompanyCode_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="22"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerCompanyCode_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Įmonės Kodas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerCompanyCode_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="Separator5" type="ColorRect" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="23"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="ViewController_NewInvoiceSelectableServices_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="24"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer"]
+custom_minimum_size = Vector2(278, 1)
+layout_mode = 2
+text = "Pasirenkamos Paslaugos:"
+autowrap_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer"]
+layout_mode = 2
+
+[node name="Services_Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="25" instance=ExtResource("7_lg8p5")]
+layout_mode = 2
+
+[node name="Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button" index="1"]
+text = "Paslaugos"
+
+[node name="Separator6" type="ColorRect" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="26"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="27"]
+layout_mode = 2
+
+[node name="Save_Button" type="Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+text = "Išsaugoti"
+
+[node name="Back_Button" type="Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+text = "Atgal"
+
 [editable path="ViewController/MainMenu_View"]
+[editable path="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Generate_Button"]
+[editable path="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Edit_Button"]
+[editable path="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/New_Button"]
+[editable path="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button"]
+[editable path="ViewController/Info_View"]
+[editable path="ViewController/Info_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Ok_Button"]
+[editable path="ViewController/Error_View"]
+[editable path="ViewController/Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button"]
+[editable path="ViewController/Critical_Error_View"]
+[editable path="ViewController/Critical_Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button"]
+[editable path="ViewController/EditInvoiceData_View"]
+[editable path="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button"]
+[editable path="ViewController/EditInvoiceServices_View"]
+[editable path="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Add_Button"]
+[editable path="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button"]
+[editable path="ViewController/GenerateInvoice_View"]
+[editable path="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button"]

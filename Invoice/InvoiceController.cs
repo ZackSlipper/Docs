@@ -7,9 +7,15 @@ namespace Docs.Invoice;
 
 public partial class InvoiceController : Node
 {
-	public List<InvoiceData> Invoices { get; private set; }
+	public List<InvoiceData> Invoices { get; private set; } = new();
 
 	public override void _Ready() => LoadInvoices();
+
+	public void AddInvoice(InvoiceData invoice)
+	{
+		Invoices.Add(invoice);
+		SaveInvoices();
+	}
 
 	private void LoadInvoices()
 	{

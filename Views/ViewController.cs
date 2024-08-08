@@ -6,8 +6,6 @@ namespace Docs.Views;
 
 public partial class ViewController : Node
 {
-    [Export] private Godot.Collections.Array<View> viewList;
-
 	private Dictionary<string, View> Views { get; } = new();
 
 	public string CurrentView { get; private set; }
@@ -17,8 +15,22 @@ public partial class ViewController : Node
 
 	public override void _Ready()
 	{
-		foreach (var view in viewList)
+		foreach (Node viewNode in GetChildren())
+		{
+			View view = viewNode as View;
+
 			Views.Add(view.Name, view);
+			if (view.Visible)
+				CurrentView = view.Name;
+		}
+	}
+
+	public void ShowPreviousView()
+	{
+		if (string.IsNullOrEmpty(PreviousView))
+			return;
+
+		ShowView(PreviousView);
 	}
 
 	public void ShowView(string viewName, object data = null)

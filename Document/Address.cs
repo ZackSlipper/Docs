@@ -8,6 +8,8 @@ public class Address
 
 	public bool CityFirst { get; set; }
 
+	public Address() { }
+
 	public Address(string city, string street, string building, bool cityFirst = true)
 	{
 		City = city;

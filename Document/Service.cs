@@ -2,9 +2,11 @@ namespace Docs.Document;
 
 public class Service
 {
-    public string Name { get; }
-	public Date Date { get; }
-	public decimal Price { get; }
+	public string Name { get; set; }
+	public Date Date { get; set; }
+	public decimal Price { get; set; }
+
+	public Service() { }
 
 	public Service(string name, Date date, decimal price)
 	{

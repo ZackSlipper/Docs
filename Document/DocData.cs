@@ -5,18 +5,18 @@ namespace Docs.Document;
 public class DocData
 {
 	public int Series { get; set; }
-	public Date Date { get; set; }
+	public Date Date { get; set; } = new();
 
 	//Seller
 	public string SellerName { get; set; }
 	public string SellerPersonalNo { get; set; }
-	public Address SellerAddress { get; set; }
+	public Address SellerAddress { get; set; } = new();
 	public string SellerBankAccount { get; set; }
 	public string SellerActivityCertificateNo { get; set; }
 
 	//Buyer
 	public string BuyerName { get; set; }
-	public Address BuyerAddress { get; set; }
+	public Address BuyerAddress { get; set; } = new();
 	public string BuyerCompanyCode { get; set; }
 
 

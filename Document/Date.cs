@@ -10,6 +10,12 @@ public class Date
 
 	public bool FullMonthRange { get; set; }
 
+	public Date()
+	{
+		Year = DateTime.Now.Year;
+		Month = DateTime.Now.Month;
+	}
+
 	public Date(int year, int month, bool fullMonthRange = false)
 	{
 		Year = year;
@@ -25,6 +31,8 @@ public class Date
 		Day = day;
 		FullMonthRange = false;
 	}
+
+	public void SetLastDayOfMonth() => Day = DateTime.DaysInMonth(Year, Month);
 
 	public override string ToString() =>
 		FullMonthRange ? $"{Year} {Month:D2} 01 - {Day:D2}" : $"{Year}-{Month:D2}-{Day:D2}";

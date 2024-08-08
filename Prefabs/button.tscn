@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://cybs2pqc7rhqt"]
+
+[ext_resource type="Theme" uid="uid://bsy13godkubmb" path="res://Themes/main_theme.tres" id="1_0ydjp"]
+
+[node name="Button" type="HBoxContainer"]
+
+[node name="Spacer" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_0ydjp")
+text = "[Button]"
+
+[node name="Spacer2" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
