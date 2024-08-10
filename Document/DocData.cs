@@ -1,11 +1,12 @@
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Docs.Document;
 
 public class DocData
 {
-	public int Series { get; set; }
-	public Date Date { get; set; } = new();
+	[JsonIgnore] public int Series { get; set; }
+	[JsonIgnore] public Date Date { get; set; } = new();
 
 	//Seller
 	public string SellerName { get; set; }
@@ -20,9 +21,9 @@ public class DocData
 	public string BuyerCompanyCode { get; set; }
 
 
-	public Service[] Services { get; set; }
-	public decimal ServiceTotalPrice { get; private set; }
-	public string ServiceTotalPriceInWords { get; private set; }
+	[JsonIgnore] public Service[] Services { get; set; }
+	[JsonIgnore] public decimal ServiceTotalPrice { get; private set; }
+	[JsonIgnore] public string ServiceTotalPriceInWords { get; private set; }
 
 	public DocData(int series, Date date, string sellerName, string sellerPersonalNo, Address sellerAddress, string sellerBankAccount,
 	string sellerActivityCertificateNo, string buyerName, Address buyerAddress, string buyerCompanyCode, Service[] services)
@@ -49,7 +50,7 @@ public class DocData
 
 	public void RecalculateTotalPrice()
 	{
-		ServiceTotalPrice = Services.Sum(s => s.Price);
+		ServiceTotalPrice = Services?.Sum(s => s.Price) ?? 0;
 		ServiceTotalPriceInWords = PriceToWords.Convert(ServiceTotalPrice);
 	}
 }

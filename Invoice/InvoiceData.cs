@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Docs.Document;
+using Newtonsoft.Json;
 
 namespace Docs.Invoice;
 
@@ -12,6 +13,7 @@ public class InvoiceData
 
 	public bool SelectableServices { get; set; }
 	public List<Service> Services { get; set; } = new();
+	[JsonIgnore] public List<Service> SelectedServices { get; set; } = new();
 
 	public DocData OtherData { get; set; } = new();
 }
