@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ba4vr0xh408if"]
+[gd_scene load_steps=19 format=3 uid="uid://ba4vr0xh408if"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_862cu"]
 [ext_resource type="Theme" uid="uid://bsy13godkubmb" path="res://Themes/main_theme.tres" id="2_frg3k"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://Views/GenerateInvoiceView.cs" id="15_n4gp4"]
 [ext_resource type="Script" path="res://Views/InvoiceServicesView.cs" id="16_0osyk"]
 [ext_resource type="PackedScene" uid="uid://dqtayq0mjfcte" path="res://Prefabs/selectable_service_item.tscn" id="17_inj75"]
+[ext_resource type="Script" path="res://Views/SaveFileView.cs" id="18_5xxhr"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -25,6 +26,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_frg3k")
 script = ExtResource("1_862cu")
 
 [node name="Global" type="Node" parent="." node_paths=PackedStringArray("viewController", "invoiceController")]
@@ -232,7 +234,7 @@ layout_mode = 2
 [node name="Button" parent="ViewController/Critical_Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button" index="1"]
 text = "Uždaryti"
 
-[node name="EditInvoiceData_View" parent="ViewController" node_paths=PackedStringArray("shortNameLineEdit", "startYearLineEdit", "startMonthOptionButton", "startSeriesLineEdit", "sellerNameLineEdit", "sellerPersonalNoLineEdit", "sellerAddressCityLineEdit", "sellerAddressStreetLineEdit", "sellerAddressBuildingLineEdit", "sellerBankAccNoLineEdit", "sellerActivityCertificateNoLineEdit", "buyerNameLineEdit", "buyerAddressCityLineEdit", "buyerAddressStreetLineEdit", "buyerAddressBuildingLineEdit", "buyerCompanyCodeLineEdit", "selectableServicesButton", "servicesButton", "backButton", "saveButton", "scrollContainer") instance=ExtResource("2_k15nl")]
+[node name="EditInvoiceData_View" parent="ViewController" node_paths=PackedStringArray("shortNameLineEdit", "startYearLineEdit", "startMonthOptionButton", "startSeriesLineEdit", "sellerNameLineEdit", "sellerPersonalNoLineEdit", "sellerAddressCityLineEdit", "sellerAddressPostalCodeLineEdit", "sellerAddressStreetLineEdit", "sellerAddressBuildingLineEdit", "sellerBankAccNoLineEdit", "sellerActivityCertificateNoLineEdit", "buyerNameLineEdit", "buyerAddressCityLineEdit", "buyerAddressPostalCodeLineEdit", "buyerAddressStreetLineEdit", "buyerAddressBuildingLineEdit", "buyerCompanyCodeLineEdit", "selectableServicesButton", "servicesButton", "backButton", "saveButton", "scrollContainer") instance=ExtResource("2_k15nl")]
 visible = false
 layout_mode = 1
 script = ExtResource("11_0kyum")
@@ -243,12 +245,14 @@ startSeriesLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/
 sellerNameLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerName_HBoxContainer/LineEdit")
 sellerPersonalNoLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerPersonalNo_HBoxContainer/LineEdit")
 sellerAddressCityLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressCity_HBoxContainer/LineEdit")
+sellerAddressPostalCodeLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressPostalCode_HBoxContainer2/LineEdit")
 sellerAddressStreetLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressStreet_HBoxContainer/LineEdit")
 sellerAddressBuildingLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressBuilding_HBoxContainer/LineEdit")
 sellerBankAccNoLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerBankNo_HBoxContainer/LineEdit")
 sellerActivityCertificateNoLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerActivityCertificateNo_HBoxContainer/LineEdit")
 buyerNameLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerName_HBoxContainer2/LineEdit")
 buyerAddressCityLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressCity_HBoxContainer2/LineEdit")
+buyerAddressPostalCodeLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressPostalCode_HBoxContainer/LineEdit")
 buyerAddressStreetLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressStreet_HBoxContainer2/LineEdit")
 buyerAddressBuildingLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressBuilding_HBoxContainer2/LineEdit")
 buyerCompanyCodeLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerCompanyCode_HBoxContainer/LineEdit")
@@ -423,7 +427,22 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="SellerAddressStreet_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="12"]
+[node name="SellerAddressPostalCode_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="12"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressPostalCode_HBoxContainer2"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Pašto Kodas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressPostalCode_HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="SellerAddressStreet_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="13"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressStreet_HBoxContainer"]
@@ -438,7 +457,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="SellerAddressBuilding_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="13"]
+[node name="SellerAddressBuilding_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="14"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerAddressBuilding_HBoxContainer"]
@@ -453,7 +472,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="SellerBankNo_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="14"]
+[node name="SellerBankNo_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="15"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerBankNo_HBoxContainer"]
@@ -468,7 +487,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="SellerActivityCertificateNo_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="15"]
+[node name="SellerActivityCertificateNo_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="16"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SellerActivityCertificateNo_HBoxContainer"]
@@ -483,19 +502,19 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="Separator4" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="16"]
+[node name="Separator4" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="17"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="BuyerTitle_Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="17"]
+[node name="BuyerTitle_Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="18"]
 layout_mode = 2
 theme = ExtResource("2_frg3k")
 theme_override_font_sizes/font_size = 30
 text = "Pirkėjas"
 horizontal_alignment = 1
 
-[node name="BuyerName_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="18"]
+[node name="BuyerName_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="19"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerName_HBoxContainer2"]
@@ -510,7 +529,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="BuyerAddressCity_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="19"]
+[node name="BuyerAddressCity_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="20"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressCity_HBoxContainer2"]
@@ -525,7 +544,22 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="BuyerAddressStreet_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="20"]
+[node name="BuyerAddressPostalCode_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="21"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressPostalCode_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Adreso Pašto Kodas:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressPostalCode_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+
+[node name="BuyerAddressStreet_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="22"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressStreet_HBoxContainer2"]
@@ -540,7 +574,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="BuyerAddressBuilding_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="21"]
+[node name="BuyerAddressBuilding_HBoxContainer2" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="23"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressBuilding_HBoxContainer2"]
@@ -555,7 +589,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="BuyerCompanyCode_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="22"]
+[node name="BuyerCompanyCode_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="24"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerCompanyCode_HBoxContainer"]
@@ -570,12 +604,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 
-[node name="Separator5" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="23"]
+[node name="Separator5" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="25"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="ViewController_NewInvoiceSelectableServices_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="24"]
+[node name="ViewController_NewInvoiceSelectableServices_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="26"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer"]
@@ -587,18 +621,18 @@ autowrap_mode = 2
 [node name="CheckButton" type="CheckButton" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer"]
 layout_mode = 2
 
-[node name="Services_Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="25" instance=ExtResource("7_lg8p5")]
+[node name="Services_Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="27" instance=ExtResource("7_lg8p5")]
 layout_mode = 2
 
 [node name="Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button" index="1"]
 text = "Paslaugos"
 
-[node name="Separator6" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="26"]
+[node name="Separator6" type="ColorRect" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="28"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="27"]
+[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="29"]
 layout_mode = 2
 
 [node name="Save_Button" type="Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
@@ -889,6 +923,26 @@ layout_mode = 2
 
 [node name="Button" parent="ViewController/InvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button" index="1"]
 text = "Atgal"
+
+[node name="SaveFileView" type="Control" parent="ViewController"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("18_5xxhr")
+name = "save_file"
+
+[node name="FileDialog" type="FileDialog" parent="ViewController/SaveFileView"]
+title = "Išsaugoti Sąskaitą Faktūrą"
+size = Vector2i(613, 180)
+always_on_top = true
+force_native = true
+ok_button_text = "Išsaugoti"
+dialog_hide_on_ok = true
+cancel_button_text = "Atšaukti"
+mode_overrides_title = false
+access = 2
+use_native_dialog = true
 
 [editable path="ViewController/MainMenu_View"]
 [editable path="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Generate_Button"]

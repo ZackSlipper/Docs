@@ -18,7 +18,7 @@ public static class NumberToWords
 
 		StringBuilder sb = new();
 		if (millions > 0)
-			sb.Append($"{fullMillions} ");
+			sb.Append($"{fullMillions}");
 		if (thousands > 0)
 			sb.Append($"{fullThousands} ");
 		sb.Append(fullHundreds);
@@ -74,6 +74,7 @@ public static class NumberToWords
 								(hundreds == 1 ? "šimtas" : $"{UpTo20(hundreds)} šimtai") :
 								"";
 
+
 		string prefix = "";
 		if (number > 0)
 		{
@@ -85,6 +86,7 @@ public static class NumberToWords
 				prefix = tenPrefix;
 		}
 
-		return $"{hundredsStr}{(tens + ones == 0 ? "" : $" {tensStr}")}{(string.IsNullOrWhiteSpace(prefix) ? "" : $" {prefix}")}";
+		bool hasPrefixAndIsOne = !string.IsNullOrWhiteSpace(prefix) && number % 10 == 1;
+		return $"{hundredsStr}{(tens + ones == 0 || hasPrefixAndIsOne ? "" : $" {tensStr}")}{(string.IsNullOrWhiteSpace(prefix) ? "" : $" {prefix}")}";
 	}
 }

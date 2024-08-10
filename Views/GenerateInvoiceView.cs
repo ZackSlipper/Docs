@@ -25,11 +25,8 @@ public partial class GenerateInvoiceView : View
 	{
 		servicesButton.Pressed += () =>
 			Global.ViewController.ShowView("invoice_services", Invoice);
-
-		saveButton.Pressed += SaveInvoice;
-
-		backButton.Pressed += () =>
-			Global.ViewController.ShowView("main_menu");
+		saveButton.Pressed += OnSaveButtonPressed;
+		backButton.Pressed += () => Global.ViewController.ShowView("main_menu");
 
 		dateYearLineEdit.TextChanged += OnDateYearTextChanged;
 		dateMonthOptionButton.ItemSelected += OnDateMonthItemSelected;
@@ -52,6 +49,18 @@ public partial class GenerateInvoiceView : View
 		RecalculateSeries();
 	}
 
+	private void OnSaveButtonPressed()
+	{
+		if (Invoice.SelectableServices && Invoice.SelectedServices.Count == 0)
+		{
+			Global.ViewController.ShowView("info",
+				new string[] { "Klaida", "Pasirinkite bent vieną paslaugą.", "generate_invoice" });
+			return;
+		}
+
+		Global.ViewController.ShowView("save_file", new object[] { SaveInvoice, Invoice.ShortName });
+	}
+
 	public override void ViewEnabled(object data)
 	{
 		if (data is InvoiceData invoiceData)
@@ -60,6 +69,7 @@ public partial class GenerateInvoiceView : View
 			Invoice.SelectedServices.Clear();
 			Date.Year = DateTime.Now.Year;
 			Date.Month = DateTime.Now.Month;
+			Date.SetLastDayOfMonth();
 			SetFieldValues();
 			RecalculateSeries();
 
@@ -81,7 +91,7 @@ public partial class GenerateInvoiceView : View
 		SetupDocumentServices();
 		Invoice.OtherData.RecalculateTotalPrice();
 		serviceCountLabel.Text = Invoice.OtherData.Services.Length.ToString();
-		totalPriceLabel.Text = Invoice.OtherData.ServiceTotalPrice.ToString();
+		totalPriceLabel.Text = $"{Invoice.OtherData.ServiceTotalPrice} Eur";
 	}
 
 	private void SetupDocumentServices()
@@ -108,8 +118,21 @@ public partial class GenerateInvoiceView : View
 		seriesLabel.Text = Invoice.OtherData.Series.ToString();
 	}
 
-	private void SaveInvoice()
+	private void SaveInvoice(string path)
 	{
+		try
+		{
+			DocBuilder builder = new();
+			builder.Build(Invoice.OtherData);
+			builder.Save(path);
+		}
+		catch (Exception ex)
+		{
+			Global.ViewController.ShowView("error", ex);
+			return;
+		}
 
+		Global.ViewController.ShowView("info",
+			new string[] { "Sąskaita Faktūra Išsaugota", "", "main_menu" });
 	}
 }

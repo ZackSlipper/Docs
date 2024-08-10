@@ -68,6 +68,7 @@ text = "Diena:              "
 [node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer/Day_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_tnln6")
 text = "1"
 placeholder_text = "1"
 virtual_keyboard_type = 2

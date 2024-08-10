@@ -10,10 +10,12 @@ namespace Docs.Application;
 
 public class FileManager
 {
-	private static string StorageDirectory { get; } = 
+	private static string StorageDirectory { get; } =
 		$"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/Docs";
 
 	private static string InvoiceDataPath { get; } = $"{StorageDirectory}/InvoiceData.json";
+
+	public static string DocumentsPath { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 	static FileManager() => ValidateDirectories();
 

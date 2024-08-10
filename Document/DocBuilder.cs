@@ -43,16 +43,18 @@ public class DocBuilder
 		Document.CreateParagraph(data.Date.ToString(), ParagraphAlignment.CENTER, (int)(Cm * 1.5f));
 
 		Document.CreateParagraph("Pardavėjas:", isBold: true);
-		Document.CreateParagraph(data.SellerName);
-		Document.CreateParagraph($"Asmens kodas {data.SellerPersonalNo}");
+		Document.CreateParagraph(data.SellerName.Trim());
+		Document.CreateParagraph($"Asmens kodas {data.SellerPersonalNo.Trim()}");
 		Document.CreateParagraph($"Adresas {data.SellerAddress}");
-		Document.CreateParagraph($"A/s {data.SellerBankAccount}");
-		Document.CreateParagraph($"Individualios veiklos pažymėjimas Nr.{data.SellerActivityCertificateNo}", spacingAfter: Cm / 2);
+		Document.CreateParagraph($"A/s {data.SellerBankAccount.Trim()}");
+		Document.CreateParagraph(
+			$"Individualios veiklos pažymėjimas Nr.{data.SellerActivityCertificateNo.Trim()}",
+			spacingAfter: Cm / 2);
 
 		Document.CreateParagraph("Pirkėjas:", isBold: true);
-		Document.CreateParagraph(data.BuyerName);
+		Document.CreateParagraph(data.BuyerName.Trim());
 		Document.CreateParagraph(data.BuyerAddress.ToString());
-		Document.CreateParagraph($"Įmonės kodas {data.BuyerCompanyCode}", spacingAfter: (int)(Cm * 1.5f));
+		Document.CreateParagraph($"Įmonės kodas {data.BuyerCompanyCode.Trim()}", spacingAfter: (int)(Cm * 1.5f));
 
 
 		//Table
@@ -77,7 +79,7 @@ public class DocBuilder
 
 			string[] nameLines = service.Name.Split(Environment.NewLine);
 			foreach (string line in nameLines)
-				table.GetRow(i + 1).GetCell(1).AddParagraph(line, ParagraphAlignment.LEFT);
+				table.GetRow(i + 1).GetCell(1).AddParagraph(line.Trim(), ParagraphAlignment.LEFT);
 
 			table.GetRow(i + 1).GetCell(2).AddParagraph(service.Date.ToString());
 			table.GetRow(i + 1).GetCell(3).AddParagraph(service.Price.ToPriceText());
@@ -90,7 +92,7 @@ public class DocBuilder
 
 		Document.CreateParagraph($"Suma žodžiais: {data.ServiceTotalPriceInWords}", spacingBefore: Cm / 2, spacingAfter: (int)(Cm * 1.5f));
 
-		Document.CreateParagraph($"Sąskaitą išrašė: {data.SellerName}").AddSignLine();
+		Document.CreateParagraph($"Sąskaitą išrašė: {data.SellerName.Trim()}").AddSignLine();
 	}
 
 	public void Save(string path) =>

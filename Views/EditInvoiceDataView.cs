@@ -18,6 +18,7 @@ public partial class EditInvoiceDataView : View
 	[Export] private LineEdit sellerNameLineEdit;
 	[Export] private LineEdit sellerPersonalNoLineEdit;
 	[Export] private LineEdit sellerAddressCityLineEdit;
+	[Export] private LineEdit sellerAddressPostalCodeLineEdit;
 	[Export] private LineEdit sellerAddressStreetLineEdit;
 	[Export] private LineEdit sellerAddressBuildingLineEdit;
 	[Export] private LineEdit sellerBankAccNoLineEdit;
@@ -26,6 +27,7 @@ public partial class EditInvoiceDataView : View
 	[ExportGroup("Buyer")]
 	[Export] private LineEdit buyerNameLineEdit;
 	[Export] private LineEdit buyerAddressCityLineEdit;
+	[Export] private LineEdit buyerAddressPostalCodeLineEdit;
 	[Export] private LineEdit buyerAddressStreetLineEdit;
 	[Export] private LineEdit buyerAddressBuildingLineEdit;
 	[Export] private LineEdit buyerCompanyCodeLineEdit;
@@ -55,6 +57,7 @@ public partial class EditInvoiceDataView : View
 		sellerNameLineEdit.TextChanged += OnSellerNameTextChanged;
 		sellerPersonalNoLineEdit.TextChanged += OnSellerPersonalNoTextChanged;
 		sellerAddressCityLineEdit.TextChanged += OnSellerAddressCityTextChanged;
+		sellerAddressPostalCodeLineEdit.TextChanged += OnSellerAddressPostalCodeTextChanged;
 		sellerAddressStreetLineEdit.TextChanged += OnSellerAddressStreetTextChanged;
 		sellerAddressBuildingLineEdit.TextChanged += OnSellerAddressBuildingTextChanged;
 		sellerBankAccNoLineEdit.TextChanged += OnSellerBankAccNoTextChanged;
@@ -62,6 +65,7 @@ public partial class EditInvoiceDataView : View
 
 		buyerNameLineEdit.TextChanged += OnBuyerNameTextChanged;
 		buyerAddressCityLineEdit.TextChanged += OnBuyerAddressCityTextChanged;
+		buyerAddressPostalCodeLineEdit.TextChanged += OnBuyerAddressPostalCodeTextChanged;
 		buyerAddressStreetLineEdit.TextChanged += OnBuyerAddressStreetTextChanged;
 		buyerAddressBuildingLineEdit.TextChanged += OnBuyerAddressBuildingTextChanged;
 		buyerCompanyCodeLineEdit.TextChanged += OnBuyerCompanyCodeTextChanged;
@@ -116,6 +120,12 @@ public partial class EditInvoiceDataView : View
 			Invoice.OtherData.SellerAddress.City = newText;
 	}
 
+	private void OnSellerAddressPostalCodeTextChanged(string newText)
+	{
+		if (Invoice != null)
+			Invoice.OtherData.SellerAddress.PostalCode = newText;
+	}
+
 	private void OnSellerAddressStreetTextChanged(string newText)
 	{
 		if (Invoice != null)
@@ -150,6 +160,12 @@ public partial class EditInvoiceDataView : View
 	{
 		if (Invoice != null)
 			Invoice.OtherData.BuyerAddress.City = newText;
+	}
+
+	private void OnBuyerAddressPostalCodeTextChanged(string newText)
+	{
+		if (Invoice != null)
+			Invoice.OtherData.BuyerAddress.PostalCode = newText;
 	}
 
 	private void OnBuyerAddressStreetTextChanged(string newText)
@@ -209,6 +225,7 @@ public partial class EditInvoiceDataView : View
 		sellerNameLineEdit.Text = Invoice.OtherData.SellerName ?? "";
 		sellerPersonalNoLineEdit.Text = Invoice.OtherData.SellerPersonalNo ?? "";
 		sellerAddressCityLineEdit.Text = Invoice.OtherData.SellerAddress.City ?? "";
+		sellerAddressPostalCodeLineEdit.Text = Invoice.OtherData.SellerAddress.PostalCode ?? "";
 		sellerAddressStreetLineEdit.Text = Invoice.OtherData.SellerAddress.Street ?? "";
 		sellerAddressBuildingLineEdit.Text = Invoice.OtherData.SellerAddress.Building ?? "";
 		sellerBankAccNoLineEdit.Text = Invoice.OtherData.SellerBankAccount ?? "";
@@ -216,6 +233,7 @@ public partial class EditInvoiceDataView : View
 
 		buyerNameLineEdit.Text = Invoice.OtherData.BuyerName ?? "";
 		buyerAddressCityLineEdit.Text = Invoice.OtherData.BuyerAddress.City ?? "";
+		buyerAddressPostalCodeLineEdit.Text = Invoice.OtherData.BuyerAddress.PostalCode ?? "";
 		buyerAddressStreetLineEdit.Text = Invoice.OtherData.BuyerAddress.Street ?? "";
 		buyerAddressBuildingLineEdit.Text = Invoice.OtherData.BuyerAddress.Building ?? "";
 		buyerCompanyCodeLineEdit.Text = Invoice.OtherData.BuyerCompanyCode ?? "";
@@ -234,6 +252,7 @@ public partial class EditInvoiceDataView : View
 		sellerNameLineEdit.Text = string.Empty;
 		sellerPersonalNoLineEdit.Text = string.Empty;
 		sellerAddressCityLineEdit.Text = string.Empty;
+		sellerAddressPostalCodeLineEdit.Text = string.Empty;
 		sellerAddressStreetLineEdit.Text = string.Empty;
 		sellerAddressBuildingLineEdit.Text = string.Empty;
 		sellerBankAccNoLineEdit.Text = string.Empty;
@@ -241,6 +260,7 @@ public partial class EditInvoiceDataView : View
 
 		buyerNameLineEdit.Text = string.Empty;
 		buyerAddressCityLineEdit.Text = string.Empty;
+		buyerAddressPostalCodeLineEdit.Text = string.Empty;
 		buyerAddressStreetLineEdit.Text = string.Empty;
 		buyerAddressBuildingLineEdit.Text = string.Empty;
 		buyerCompanyCodeLineEdit.Text = string.Empty;
