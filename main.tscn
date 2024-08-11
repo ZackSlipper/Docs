@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://ba4vr0xh408if"]
+[gd_scene load_steps=20 format=3 uid="uid://ba4vr0xh408if"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_862cu"]
 [ext_resource type="Theme" uid="uid://bsy13godkubmb" path="res://Themes/main_theme.tres" id="2_frg3k"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://Views/InfoView.cs" id="8_8cj88"]
 [ext_resource type="Script" path="res://Views/ErrorView.cs" id="8_k5tr7"]
 [ext_resource type="Script" path="res://Views/EditInvoiceDataView.cs" id="11_0kyum"]
+[ext_resource type="Script" path="res://Views/ConfirmationView.cs" id="11_11rjh"]
 [ext_resource type="Script" path="res://Views/EditInvoiceServicesView.cs" id="13_ko45p"]
 [ext_resource type="PackedScene" uid="uid://sc0w566xn61a" path="res://Prefabs/service_item.tscn" id="14_oydix"]
 [ext_resource type="Script" path="res://Views/GenerateInvoiceView.cs" id="15_n4gp4"]
@@ -161,6 +162,7 @@ text = "[Title]"
 horizontal_alignment = 1
 
 [node name="Content_Label" type="Label" parent="ViewController/Info_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
+custom_minimum_size = Vector2(1, 1)
 layout_mode = 2
 theme = ExtResource("2_frg3k")
 text = "[Content]"
@@ -172,6 +174,46 @@ layout_mode = 2
 
 [node name="Button" parent="ViewController/Info_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Ok_Button" index="1"]
 text = "Gerai"
+
+[node name="Confirmation_View" parent="ViewController" node_paths=PackedStringArray("titleLabel", "contentLabel", "okButton", "cancelButton") instance=ExtResource("2_k15nl")]
+visible = false
+layout_mode = 1
+script = ExtResource("11_11rjh")
+titleLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Title_Label")
+contentLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Content_Label")
+okButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/HBoxContainer/Ok_Button")
+cancelButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/HBoxContainer/Cancel_Button")
+name = "confirm"
+
+[node name="Content_VBoxContainer" parent="ViewController/Confirmation_View/MarginContainer/ScrollContainer/MarginContainer" index="0"]
+alignment = 1
+
+[node name="Title_Label" type="Label" parent="ViewController/Confirmation_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "[Title]"
+horizontal_alignment = 1
+
+[node name="Content_Label" type="Label" parent="ViewController/Confirmation_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+theme = ExtResource("2_frg3k")
+text = "[Content]"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ViewController/Confirmation_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="Ok_Button" type="Button" parent="ViewController/Confirmation_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Gerai"
+
+[node name="Cancel_Button" type="Button" parent="ViewController/Confirmation_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Atšaukti"
 
 [node name="Error_View" parent="ViewController" node_paths=PackedStringArray("contentLabel", "backButton") instance=ExtResource("2_k15nl")]
 visible = false
@@ -234,7 +276,7 @@ layout_mode = 2
 [node name="Button" parent="ViewController/Critical_Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button" index="1"]
 text = "Uždaryti"
 
-[node name="EditInvoiceData_View" parent="ViewController" node_paths=PackedStringArray("shortNameLineEdit", "startYearLineEdit", "startMonthOptionButton", "startSeriesLineEdit", "sellerNameLineEdit", "sellerPersonalNoLineEdit", "sellerAddressCityLineEdit", "sellerAddressPostalCodeLineEdit", "sellerAddressStreetLineEdit", "sellerAddressBuildingLineEdit", "sellerBankAccNoLineEdit", "sellerActivityCertificateNoLineEdit", "buyerNameLineEdit", "buyerAddressCityLineEdit", "buyerAddressPostalCodeLineEdit", "buyerAddressStreetLineEdit", "buyerAddressBuildingLineEdit", "buyerCompanyCodeLineEdit", "selectableServicesButton", "servicesButton", "backButton", "saveButton", "scrollContainer") instance=ExtResource("2_k15nl")]
+[node name="EditInvoiceData_View" parent="ViewController" node_paths=PackedStringArray("shortNameLineEdit", "startYearLineEdit", "startMonthOptionButton", "startSeriesLineEdit", "sellerNameLineEdit", "sellerPersonalNoLineEdit", "sellerAddressCityLineEdit", "sellerAddressPostalCodeLineEdit", "sellerAddressStreetLineEdit", "sellerAddressBuildingLineEdit", "sellerBankAccNoLineEdit", "sellerActivityCertificateNoLineEdit", "buyerNameLineEdit", "buyerAddressCityLineEdit", "buyerAddressPostalCodeLineEdit", "buyerAddressStreetLineEdit", "buyerAddressBuildingLineEdit", "buyerCompanyCodeLineEdit", "selectableServicesButton", "servicesButton", "backButton", "deleteButton", "saveButton", "scrollContainer") instance=ExtResource("2_k15nl")]
 visible = false
 layout_mode = 1
 script = ExtResource("11_0kyum")
@@ -259,6 +301,7 @@ buyerCompanyCodeLineEdit = NodePath("MarginContainer/ScrollContainer/MarginConta
 selectableServicesButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer/CheckButton")
 servicesButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button/Button")
 backButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Back_Button")
+deleteButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Delete_Button")
 saveButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Save_Button")
 scrollContainer = NodePath("MarginContainer/ScrollContainer")
 name = "edit_invoice_data"
@@ -641,6 +684,12 @@ size_flags_horizontal = 3
 theme = ExtResource("2_frg3k")
 text = "Išsaugoti"
 
+[node name="Delete_Button" type="Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+text = "Ištrinti"
+
 [node name="Back_Button" type="Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -951,6 +1000,7 @@ use_native_dialog = true
 [editable path="ViewController/MainMenu_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button"]
 [editable path="ViewController/Info_View"]
 [editable path="ViewController/Info_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Ok_Button"]
+[editable path="ViewController/Confirmation_View"]
 [editable path="ViewController/Error_View"]
 [editable path="ViewController/Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button"]
 [editable path="ViewController/Critical_Error_View"]

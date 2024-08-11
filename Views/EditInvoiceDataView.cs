@@ -38,6 +38,7 @@ public partial class EditInvoiceDataView : View
 
 	[ExportGroup("Buttons")]
 	[Export] private Button backButton;
+	[Export] private Button deleteButton;
 	[Export] private Button saveButton;
 
 	[ExportGroup("Other")]
@@ -74,6 +75,7 @@ public partial class EditInvoiceDataView : View
 		servicesButton.Pressed += OnServicesButtonPressed;
 
 		backButton.Pressed += BackToMainMenu;
+		deleteButton.Pressed += OnDeleteButtonPressed;
 		saveButton.Pressed += SaveInvoice;
 	}
 
@@ -199,6 +201,17 @@ public partial class EditInvoiceDataView : View
 
 		Global.ViewController.ShowView("edit_invoice_services", Invoice);
 	}
+
+	private void OnDeleteButtonPressed()
+	{
+		if (Invoice == null)
+			return;
+
+		Global.ViewController.ShowView("confirm", new object[] {
+			"Ištrinti Sąskaitą Faktūrą",
+			$"Ar tikrai norite ištrinti sąskaitą faktūrą '{Invoice.ShortName}'?",
+			"edit_invoice_data", DeleteInvoice });
+	}
 	#endregion
 
 	public override void ViewEnabled(object data)
@@ -211,6 +224,7 @@ public partial class EditInvoiceDataView : View
 			SetFieldValuesFromInvoiceData();
 		}
 
+		deleteButton.Visible = !IsNewInvoice;
 		scrollContainer.ScrollVertical = 0;
 	}
 
@@ -243,6 +257,8 @@ public partial class EditInvoiceDataView : View
 
 	private void Clear()
 	{
+		Invoice = null;
+
 		shortNameLineEdit.Text = string.Empty;
 
 		startYearLineEdit.Text = DateTime.Now.Year.ToString();
@@ -320,8 +336,17 @@ public partial class EditInvoiceDataView : View
 			Global.InvoiceController.AddInvoice(Invoice);
 		else
 			Global.InvoiceController.SaveInvoices();
-		Invoice = null;
 		Clear();
 		Global.ViewController.ShowView("info", new string[] { "Išsaugota", "", "main_menu" });
+	}
+
+	private void DeleteInvoice()
+	{
+		if (Invoice == null)
+			return;
+
+		Global.InvoiceController.RemoveInvoice(Invoice);
+		Clear();
+		Global.ViewController.ShowView("info", new string[] { "Ištrinta", "", "main_menu" });
 	}
 }

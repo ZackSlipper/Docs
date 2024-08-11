@@ -114,6 +114,6 @@ public partial class InvoiceServicesView : View
 	{
 		invoiceOptions.Clear();
 		foreach (var service in Invoice.Services)
-			invoiceOptions.AddItem(service.Name);
+			invoiceOptions.AddItem($"{service.Name} ({service.Price:0.00}€)");
 	}
 }

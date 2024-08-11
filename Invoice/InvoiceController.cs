@@ -17,6 +17,12 @@ public partial class InvoiceController : Node
 		SaveInvoices();
 	}
 
+	public void RemoveInvoice(InvoiceData invoice)
+	{
+		Invoices.Remove(invoice);
+		SaveInvoices();
+	}
+
 	private void LoadInvoices()
 	{
 		try

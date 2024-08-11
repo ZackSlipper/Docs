@@ -6,9 +6,9 @@ namespace Docs.Application;
 
 public partial class Global : Node
 {
-    private static Global Instance { get; set; }
+	private static Global Instance { get; set; }
 
-	[Export] private ViewController	viewController;
+	[Export] private ViewController viewController;
 	public static ViewController ViewController => Instance.viewController;
 
 	[Export] private InvoiceController invoiceController;
