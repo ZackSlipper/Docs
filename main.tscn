@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://ba4vr0xh408if"]
+[gd_scene load_steps=21 format=3 uid="uid://ba4vr0xh408if"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_862cu"]
 [ext_resource type="Theme" uid="uid://bsy13godkubmb" path="res://Themes/main_theme.tres" id="2_frg3k"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://Views/InvoiceServicesView.cs" id="16_0osyk"]
 [ext_resource type="PackedScene" uid="uid://dqtayq0mjfcte" path="res://Prefabs/selectable_service_item.tscn" id="17_inj75"]
 [ext_resource type="Script" path="res://Views/SaveFileView.cs" id="18_5xxhr"]
+[ext_resource type="Script" path="res://Views/PrintView.cs" id="19_8xq5s"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -735,7 +736,7 @@ layout_mode = 2
 [node name="Button" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button" index="1"]
 text = "Atgal"
 
-[node name="GenerateInvoice_View" parent="ViewController" node_paths=PackedStringArray("shortNameLabel", "dateYearLineEdit", "dateMonthOptionButton", "seriesLabel", "servicesButton", "serviceCountLabel", "totalPriceLabel", "saveButton", "backButton") instance=ExtResource("2_k15nl")]
+[node name="GenerateInvoice_View" parent="ViewController" node_paths=PackedStringArray("shortNameLabel", "dateYearLineEdit", "dateMonthOptionButton", "seriesLabel", "servicesButton", "serviceCountLabel", "totalPriceLabel", "saveButton", "saveAndPrintButton", "backButton") instance=ExtResource("2_k15nl")]
 visible = false
 layout_mode = 1
 script = ExtResource("15_n4gp4")
@@ -747,6 +748,7 @@ servicesButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Conte
 serviceCountLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ServiceCount_HBoxContainer/Value_Label")
 totalPriceLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Sum_HBoxContainer/Value_Label")
 saveButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Save_Button")
+saveAndPrintButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SaveAndPrint_Button/Button")
 backButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Back_Button")
 name = "generate_invoice"
 
@@ -900,7 +902,13 @@ custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="12"]
+[node name="SaveAndPrint_Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="12" instance=ExtResource("7_lg8p5")]
+layout_mode = 2
+
+[node name="Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SaveAndPrint_Button" index="1"]
+text = "Išsaugoti Ir Spausdinti"
+
+[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="13"]
 layout_mode = 2
 
 [node name="Save_Button" type="Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
@@ -973,6 +981,49 @@ layout_mode = 2
 [node name="Button" parent="ViewController/InvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button" index="1"]
 text = "Atgal"
 
+[node name="Print_View" parent="ViewController" node_paths=PackedStringArray("printers", "printButton", "cancelButton") instance=ExtResource("2_k15nl")]
+visible = false
+layout_mode = 1
+script = ExtResource("19_8xq5s")
+printers = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Printers_HBoxContainer/Printers_OptionButton")
+printButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Print_Button")
+cancelButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Cancel_Button")
+name = "print"
+
+[node name="Content_VBoxContainer" parent="ViewController/Print_View/MarginContainer/ScrollContainer/MarginContainer" index="0"]
+alignment = 1
+
+[node name="Title_Label" type="Label" parent="ViewController/Print_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Spausdinti"
+horizontal_alignment = 1
+
+[node name="Printers_HBoxContainer" type="HBoxContainer" parent="ViewController/Print_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/Print_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Printers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Spausdintuvas:"
+
+[node name="Printers_OptionButton" type="OptionButton" parent="ViewController/Print_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Printers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="ViewController/Print_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="Print_Button" type="Button" parent="ViewController/Print_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Spausdinti"
+
+[node name="Cancel_Button" type="Button" parent="ViewController/Print_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Atšaukti"
+
 [node name="SaveFileView" type="Control" parent="ViewController"]
 visible = false
 anchors_preset = 0
@@ -1012,6 +1063,8 @@ use_native_dialog = true
 [editable path="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button"]
 [editable path="ViewController/GenerateInvoice_View"]
 [editable path="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button"]
+[editable path="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SaveAndPrint_Button"]
 [editable path="ViewController/InvoiceServices_View"]
 [editable path="ViewController/InvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Add_Button2"]
 [editable path="ViewController/InvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button"]
+[editable path="ViewController/Print_View"]
