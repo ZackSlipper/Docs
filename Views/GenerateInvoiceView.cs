@@ -16,6 +16,7 @@ public partial class GenerateInvoiceView : View
 	[Export] private Label serviceCountLabel;
 	[Export] private Label totalPriceLabel;
 	[Export] private Button saveButton;
+	[Export] private Button saveAndPrintButton;
 	[Export] private Button backButton;
 
 	private InvoiceData Invoice { get; set; }
@@ -26,6 +27,7 @@ public partial class GenerateInvoiceView : View
 		servicesButton.Pressed += () =>
 			Global.ViewController.ShowView("invoice_services", Invoice);
 		saveButton.Pressed += OnSaveButtonPressed;
+		saveAndPrintButton.Pressed += OnSaveAndPrintButtonPressed;
 		backButton.Pressed += () => Global.ViewController.ShowView("main_menu");
 
 		dateYearLineEdit.TextChanged += OnDateYearTextChanged;
@@ -49,16 +51,37 @@ public partial class GenerateInvoiceView : View
 		RecalculateSeries();
 	}
 
-	private void OnSaveButtonPressed()
+	private bool ValidateSelectedInvoices()
 	{
 		if (Invoice.SelectableServices && Invoice.SelectedServices.Count == 0)
 		{
 			Global.ViewController.ShowView("info",
 				new string[] { "Klaida", "Pasirinkite bent vieną paslaugą.", "generate_invoice" });
-			return;
+			return false;
 		}
+		return true;
+	}
 
-		Global.ViewController.ShowView("save_file", new object[] { SaveInvoice, Invoice.ShortName });
+	private void OnSaveButtonPressed()
+	{
+		if (!ValidateSelectedInvoices())
+			return;
+
+		Global.ViewController.ShowView("save_file", new object[]
+		{
+			SaveInvoiceAction, Invoice.ShortName
+		});
+	}
+
+	private void OnSaveAndPrintButtonPressed()
+	{
+		if (!ValidateSelectedInvoices())
+			return;
+
+		Global.ViewController.ShowView("save_file", new object[]
+		{
+			SaveAndPrintInvoiceAction, Invoice.ShortName
+		});
 	}
 
 	public override void ViewEnabled(object data)
@@ -118,7 +141,7 @@ public partial class GenerateInvoiceView : View
 		seriesLabel.Text = Invoice.OtherData.Series.ToString();
 	}
 
-	private void SaveInvoice(string path)
+	private bool SaveInvoice(string path)
 	{
 		try
 		{
@@ -129,10 +152,26 @@ public partial class GenerateInvoiceView : View
 		catch (Exception ex)
 		{
 			Global.ViewController.ShowView("error", ex);
-			return;
+			return false;
 		}
+		return true;
+	}
+
+	private void SaveInvoiceAction(string path)
+	{
+		if (!SaveInvoice(path))
+			return;
 
 		Global.ViewController.ShowView("info",
 			new string[] { "Sąskaita Faktūra Išsaugota", "", "main_menu" });
+	}
+
+	private void SaveAndPrintInvoiceAction(string path)
+	{
+		if (!SaveInvoice(path))
+			return;
+
+		//Print
+		Global.ViewController.ShowView("print", new object[] { path, "generate_invoice" });
 	}
 }

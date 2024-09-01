@@ -15,7 +15,7 @@ public class FileManager
 
 	private static string InvoiceDataPath { get; } = $"{StorageDirectory}/InvoiceData.json";
 
-	public static string DocumentsPath { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+	public static string DesktopPath { get; } = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
 	static FileManager() => ValidateDirectories();
 

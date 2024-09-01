@@ -14,8 +14,8 @@ public partial class SaveFileView : View
 	{
 		FileDialog = GetChild<FileDialog>(0);
 		FileDialog.FileSelected += OnFileSelected;
-		FileDialog.Canceled += () => Global.ViewController.ShowPreviousView();
-		FileDialog.Filters = new[] { "*.docx;Document File" };
+		FileDialog.Canceled += Global.ViewController.ShowPreviousView;
+		FileDialog.Filters = ["*.docx;Document File"];
 	}
 
 	private void OnFileSelected(string path)
@@ -35,7 +35,7 @@ public partial class SaveFileView : View
 			dataArray[0] is Action<string> saveAction && dataArray[1] is string fileName)
 		{
 			SaveAction = saveAction;
-			FileDialog.CurrentDir = FileManager.DocumentsPath;
+			FileDialog.CurrentDir = FileManager.DesktopPath;
 			FileDialog.CurrentFile = fileName;
 			FileDialog.Popup();
 		}
