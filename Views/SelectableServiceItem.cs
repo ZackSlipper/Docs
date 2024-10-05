@@ -38,14 +38,16 @@ public partial class SelectableServiceItem : Control
 	{
 		if (!int.TryParse(newText, out int day) || day < 1)
 		{
-			day = 1;
-			dayLineEdit.Text = day.ToString();
+			dayLineEdit.Modulate = new Color(1, 0, 0);
+			Service.Date.Day = 1;
+			return;
 		}
 		else if (day > DateTime.DaysInMonth(Service.Date.Year, Service.Date.Month))
 		{
 			day = DateTime.DaysInMonth(Service.Date.Year, Service.Date.Month);
 			dayLineEdit.Text = day.ToString();
 		}
+		dayLineEdit.Modulate = new Color(1, 1, 1);
 		Service.Date.Day = day;
 	}
 }
