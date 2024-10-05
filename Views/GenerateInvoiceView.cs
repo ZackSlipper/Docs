@@ -55,11 +55,15 @@ public partial class GenerateInvoiceView : View
 
 	private void OnRepeatingServiceCountTextChanged(string newText)
 	{
-		if (int.TryParse(newText, out int count))
+		if (int.TryParse(newText, out int count) && count > 0 && count <= 500)
 		{
+			repeatingServiceCountLineEdit.Modulate = new Color(1, 1, 1);
 			Invoice.OtherData.RepeatingServiceCount = count;
 			SetServiceValues();
+			return;
 		}
+
+		repeatingServiceCountLineEdit.Modulate = new Color(1, 0, 0);
 	}
 
 	private bool ValidateServices()
