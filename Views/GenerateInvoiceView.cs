@@ -63,6 +63,7 @@ public partial class GenerateInvoiceView : View
 			return;
 		}
 
+		Invoice.OtherData.RepeatingServiceCount = 0;
 		repeatingServiceCountLineEdit.Modulate = new Color(1, 0, 0);
 	}
 
