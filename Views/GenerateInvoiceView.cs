@@ -13,6 +13,7 @@ public partial class GenerateInvoiceView : View
 	[Export] private OptionButton dateMonthOptionButton;
 	[Export] private Label seriesLabel;
 	[Export] private Button servicesButton;
+	[Export] private LineEdit repeatingServiceCountLineEdit;
 	[Export] private Label serviceCountLabel;
 	[Export] private Label totalPriceLabel;
 	[Export] private Button saveButton;
@@ -32,6 +33,7 @@ public partial class GenerateInvoiceView : View
 
 		dateYearLineEdit.TextChanged += OnDateYearTextChanged;
 		dateMonthOptionButton.ItemSelected += OnDateMonthItemSelected;
+		repeatingServiceCountLineEdit.TextChanged += OnRepeatingServiceCountTextChanged;
 	}
 
 	private void OnDateYearTextChanged(string newText)
@@ -51,12 +53,27 @@ public partial class GenerateInvoiceView : View
 		RecalculateSeries();
 	}
 
-	private bool ValidateSelectedInvoices()
+	private void OnRepeatingServiceCountTextChanged(string newText)
 	{
-		if (Invoice.SelectableServices && Invoice.SelectedServices.Count == 0)
+		if (int.TryParse(newText, out int count))
+		{
+			Invoice.OtherData.RepeatingServiceCount = count;
+			SetServiceValues();
+		}
+	}
+
+	private bool ValidateServices()
+	{
+		if (Invoice.OtherData.ServiceType == ServiceType.Selectable && Invoice.SelectedServices.Count == 0)
 		{
 			Global.ViewController.ShowView("info",
 				new string[] { "Klaida", "Pasirinkite bent vieną paslaugą.", "generate_invoice" });
+			return false;
+		}
+		else if (Invoice.OtherData.ServiceType == ServiceType.Repeating && Invoice.OtherData.RepeatingServiceCount is <= 0 or > 500)
+		{
+			Global.ViewController.ShowView("info",
+				new string[] { "Klaida", "Paslaugos kartai negali būti mažesni už 1 ir didesni už 500", "generate_invoice" });
 			return false;
 		}
 		return true;
@@ -64,7 +81,7 @@ public partial class GenerateInvoiceView : View
 
 	private void OnSaveButtonPressed()
 	{
-		if (!ValidateSelectedInvoices())
+		if (!ValidateServices())
 			return;
 
 		Global.ViewController.ShowView("save_file", new object[]
@@ -75,7 +92,7 @@ public partial class GenerateInvoiceView : View
 
 	private void OnSaveAndPrintButtonPressed()
 	{
-		if (!ValidateSelectedInvoices())
+		if (!ValidateServices())
 			return;
 
 		Global.ViewController.ShowView("save_file", new object[]
@@ -95,8 +112,10 @@ public partial class GenerateInvoiceView : View
 			Date.SetLastDayOfMonth();
 			SetFieldValues();
 			RecalculateSeries();
+			OnRepeatingServiceCountTextChanged(repeatingServiceCountLineEdit.Text);
 
-			servicesButton.Visible = Invoice.SelectableServices;
+			servicesButton.Visible = Invoice.OtherData.ServiceType == ServiceType.Selectable;
+			repeatingServiceCountLineEdit.GetParent<Control>().Visible = Invoice.OtherData.ServiceType == ServiceType.Repeating;
 		}
 
 		SetServiceValues();
@@ -119,15 +138,15 @@ public partial class GenerateInvoiceView : View
 
 	private void SetupDocumentServices()
 	{
-		if (Invoice.SelectableServices)
+		if (Invoice.OtherData.ServiceType == ServiceType.Selectable)
 		{
-			foreach (var service in Invoice.SelectedServices)
+			foreach (Service service in Invoice.SelectedServices)
 				service.Date = new(Date.Year, Date.Month, service.Date.Day);
 			Invoice.OtherData.Services = Invoice.SelectedServices.ToArray();
 		}
 		else
 		{
-			foreach (var service in Invoice.Services)
+			foreach (Service service in Invoice.Services)
 				service.Date = new(Date.Year, Date.Month, true);
 			Invoice.OtherData.Services = Invoice.Services.ToArray();
 		}

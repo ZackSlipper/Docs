@@ -1,5 +1,6 @@
 using System;
 using Docs.Application;
+using Docs.Document;
 using Docs.Invoice;
 using Godot;
 
@@ -33,7 +34,7 @@ public partial class EditInvoiceDataView : View
 	[Export] private LineEdit buyerCompanyCodeLineEdit;
 
 	[ExportGroup("Services")]
-	[Export] private CheckButton selectableServicesButton;
+	[Export] private OptionButton serviceTypeOptionButton;
 	[Export] private Button servicesButton;
 
 	[ExportGroup("Buttons")]
@@ -71,7 +72,7 @@ public partial class EditInvoiceDataView : View
 		buyerAddressBuildingLineEdit.TextChanged += OnBuyerAddressBuildingTextChanged;
 		buyerCompanyCodeLineEdit.TextChanged += OnBuyerCompanyCodeTextChanged;
 
-		selectableServicesButton.Toggled += OnSelectableServicesToggled;
+		serviceTypeOptionButton.ItemSelected += OnServiceTypeItemSelected;
 		servicesButton.Pressed += OnServicesButtonPressed;
 
 		backButton.Pressed += BackToMainMenu;
@@ -188,10 +189,10 @@ public partial class EditInvoiceDataView : View
 			Invoice.OtherData.BuyerCompanyCode = newText;
 	}
 
-	private void OnSelectableServicesToggled(bool enabled)
+	private void OnServiceTypeItemSelected(long index)
 	{
 		if (Invoice != null)
-			Invoice.SelectableServices = enabled;
+			Invoice.OtherData.ServiceType = (ServiceType)(int)index;
 	}
 
 	private void OnServicesButtonPressed()
@@ -252,7 +253,7 @@ public partial class EditInvoiceDataView : View
 		buyerAddressBuildingLineEdit.Text = Invoice.OtherData.BuyerAddress.Building ?? "";
 		buyerCompanyCodeLineEdit.Text = Invoice.OtherData.BuyerCompanyCode ?? "";
 
-		selectableServicesButton.ButtonPressed = Invoice.SelectableServices;
+		serviceTypeOptionButton.Selected = (int)Invoice.OtherData.ServiceType;
 	}
 
 	private void Clear()
@@ -281,7 +282,7 @@ public partial class EditInvoiceDataView : View
 		buyerAddressBuildingLineEdit.Text = string.Empty;
 		buyerCompanyCodeLineEdit.Text = string.Empty;
 
-		selectableServicesButton.ButtonPressed = false;
+		serviceTypeOptionButton.Selected = (int)ServiceType.OneTime;
 	}
 
 	private bool ValidateInputs()

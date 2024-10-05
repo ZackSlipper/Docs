@@ -82,7 +82,10 @@ public class DocBuilder
 				table.GetRow(i + 1).GetCell(1).AddParagraph(line.Trim(), ParagraphAlignment.LEFT);
 
 			table.GetRow(i + 1).GetCell(2).AddParagraph(service.Date.ToString());
-			table.GetRow(i + 1).GetCell(3).AddParagraph(service.Price.ToPriceText());
+			if (data.ServiceType == ServiceType.Repeating)
+				table.GetRow(i + 1).GetCell(2).AddParagraph($"(Kartai {data.RepeatingServiceCount})");
+
+			table.GetRow(i + 1).GetCell(3).AddParagraph((service.Price * (data.ServiceType == ServiceType.Repeating ? data.RepeatingServiceCount : 1)).ToPriceText());
 		}
 
 		int lastRow = data.Services.Length + 1;

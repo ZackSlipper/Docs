@@ -11,7 +11,6 @@ public class InvoiceData
 	public Date StartDate { get; set; } = new();
 	public int StartSeries { get; set; } = 1;
 
-	public bool SelectableServices { get; set; }
 	public List<Service> Services { get; set; } = new();
 	[JsonIgnore] public List<Service> SelectedServices { get; set; } = new();
 

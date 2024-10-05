@@ -277,7 +277,7 @@ layout_mode = 2
 [node name="Button" parent="ViewController/Critical_Error_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Exit_Button" index="1"]
 text = "Uždaryti"
 
-[node name="EditInvoiceData_View" parent="ViewController" node_paths=PackedStringArray("shortNameLineEdit", "startYearLineEdit", "startMonthOptionButton", "startSeriesLineEdit", "sellerNameLineEdit", "sellerPersonalNoLineEdit", "sellerAddressCityLineEdit", "sellerAddressPostalCodeLineEdit", "sellerAddressStreetLineEdit", "sellerAddressBuildingLineEdit", "sellerBankAccNoLineEdit", "sellerActivityCertificateNoLineEdit", "buyerNameLineEdit", "buyerAddressCityLineEdit", "buyerAddressPostalCodeLineEdit", "buyerAddressStreetLineEdit", "buyerAddressBuildingLineEdit", "buyerCompanyCodeLineEdit", "selectableServicesButton", "servicesButton", "backButton", "deleteButton", "saveButton", "scrollContainer") instance=ExtResource("2_k15nl")]
+[node name="EditInvoiceData_View" parent="ViewController" node_paths=PackedStringArray("shortNameLineEdit", "startYearLineEdit", "startMonthOptionButton", "startSeriesLineEdit", "sellerNameLineEdit", "sellerPersonalNoLineEdit", "sellerAddressCityLineEdit", "sellerAddressPostalCodeLineEdit", "sellerAddressStreetLineEdit", "sellerAddressBuildingLineEdit", "sellerBankAccNoLineEdit", "sellerActivityCertificateNoLineEdit", "buyerNameLineEdit", "buyerAddressCityLineEdit", "buyerAddressPostalCodeLineEdit", "buyerAddressStreetLineEdit", "buyerAddressBuildingLineEdit", "buyerCompanyCodeLineEdit", "serviceTypeOptionButton", "servicesButton", "backButton", "deleteButton", "saveButton", "scrollContainer") instance=ExtResource("2_k15nl")]
 visible = false
 layout_mode = 1
 script = ExtResource("11_0kyum")
@@ -299,13 +299,16 @@ buyerAddressPostalCodeLineEdit = NodePath("MarginContainer/ScrollContainer/Margi
 buyerAddressStreetLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressStreet_HBoxContainer2/LineEdit")
 buyerAddressBuildingLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerAddressBuilding_HBoxContainer2/LineEdit")
 buyerCompanyCodeLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/BuyerCompanyCode_HBoxContainer/LineEdit")
-selectableServicesButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer/CheckButton")
+serviceTypeOptionButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ServiceType_HBoxContainer/OptionButton")
 servicesButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button/Button")
 backButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Back_Button")
 deleteButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Delete_Button")
 saveButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Save_Button")
 scrollContainer = NodePath("MarginContainer/ScrollContainer")
 name = "edit_invoice_data"
+
+[node name="ScrollContainer" parent="ViewController/EditInvoiceData_View/MarginContainer" index="0"]
+scroll_vertical = 500
 
 [node name="Title_Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="0"]
 layout_mode = 2
@@ -653,17 +656,25 @@ custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="ViewController_NewInvoiceSelectableServices_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="26"]
+[node name="ServiceType_HBoxContainer" type="HBoxContainer" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="26"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer"]
+[node name="Label" type="Label" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ServiceType_HBoxContainer"]
 custom_minimum_size = Vector2(278, 1)
 layout_mode = 2
-text = "Pasirenkamos Paslaugos:"
+text = "Paslaugų tipas:"
 autowrap_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ViewController_NewInvoiceSelectableServices_HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ServiceType_HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 3
+popup/item_0/text = "Vienkartinės"
+popup/item_1/text = "Kartotinos"
+popup/item_1/id = 1
+popup/item_2/text = "Pasirenkamos"
+popup/item_2/id = 2
 
 [node name="Services_Button" parent="ViewController/EditInvoiceData_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="27" instance=ExtResource("7_lg8p5")]
 layout_mode = 2
@@ -736,7 +747,7 @@ layout_mode = 2
 [node name="Button" parent="ViewController/EditInvoiceServices_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Back_Button" index="1"]
 text = "Atgal"
 
-[node name="GenerateInvoice_View" parent="ViewController" node_paths=PackedStringArray("shortNameLabel", "dateYearLineEdit", "dateMonthOptionButton", "seriesLabel", "servicesButton", "serviceCountLabel", "totalPriceLabel", "saveButton", "saveAndPrintButton", "backButton") instance=ExtResource("2_k15nl")]
+[node name="GenerateInvoice_View" parent="ViewController" node_paths=PackedStringArray("shortNameLabel", "dateYearLineEdit", "dateMonthOptionButton", "seriesLabel", "servicesButton", "repeatingServiceCountLineEdit", "serviceCountLabel", "totalPriceLabel", "saveButton", "saveAndPrintButton", "backButton") instance=ExtResource("2_k15nl")]
 visible = false
 layout_mode = 1
 script = ExtResource("15_n4gp4")
@@ -745,6 +756,7 @@ dateYearLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Con
 dateMonthOptionButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/DateMonth_HBoxContainer/OptionButton")
 seriesLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Series_HBoxContainer/Value_Label")
 servicesButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button/Button")
+repeatingServiceCountLineEdit = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/RepeatingServiceCount_HBoxContainer/LineEdit")
 serviceCountLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ServiceCount_HBoxContainer/Value_Label")
 totalPriceLabel = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Sum_HBoxContainer/Value_Label")
 saveButton = NodePath("MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer/Save_Button")
@@ -867,7 +879,26 @@ layout_mode = 2
 [node name="Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Services_Button" index="1"]
 text = "Paslaugos"
 
-[node name="ServiceCount_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="9"]
+[node name="RepeatingServiceCount_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="9"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/RepeatingServiceCount_HBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Paslaugos Kartai:"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/RepeatingServiceCount_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_frg3k")
+text = "1"
+placeholder_text = "1"
+max_length = 4
+virtual_keyboard_type = 2
+
+[node name="ServiceCount_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="10"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/ServiceCount_HBoxContainer"]
@@ -882,7 +913,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "[Value]"
 
-[node name="Sum_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="10"]
+[node name="Sum_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="11"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Sum_HBoxContainer"]
@@ -897,18 +928,18 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "[Value]"
 
-[node name="Separator6" type="ColorRect" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="11"]
+[node name="Separator6" type="ColorRect" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="12"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="SaveAndPrint_Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="12" instance=ExtResource("7_lg8p5")]
+[node name="SaveAndPrint_Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="13" instance=ExtResource("7_lg8p5")]
 layout_mode = 2
 
 [node name="Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/SaveAndPrint_Button" index="1"]
 text = "Išsaugoti Ir Spausdinti"
 
-[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="13"]
+[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer" index="14"]
 layout_mode = 2
 
 [node name="Save_Button" type="Button" parent="ViewController/GenerateInvoice_View/MarginContainer/ScrollContainer/MarginContainer/Content_VBoxContainer/Buttons_HBoxContainer"]

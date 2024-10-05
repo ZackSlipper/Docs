@@ -20,8 +20,9 @@ public class DocData
 	public Address BuyerAddress { get; set; } = new();
 	public string BuyerCompanyCode { get; set; }
 
-
+	public ServiceType ServiceType { get; set; }
 	[JsonIgnore] public Service[] Services { get; set; }
+	[JsonIgnore] public int RepeatingServiceCount { get; set; }
 	[JsonIgnore] public decimal ServiceTotalPrice { get; private set; }
 	[JsonIgnore] public string ServiceTotalPriceInWords { get; private set; }
 
@@ -42,7 +43,7 @@ public class DocData
 		BuyerCompanyCode = buyerCompanyCode;
 
 		Services = services;
-		ServiceTotalPrice = services.Sum(s => s.Price);
+		ServiceTotalPrice = services.Sum(s => s.Price * (ServiceType == ServiceType.Repeating ? RepeatingServiceCount : 1));
 		ServiceTotalPriceInWords = PriceToWords.Convert(ServiceTotalPrice);
 	}
 
@@ -50,7 +51,7 @@ public class DocData
 
 	public void RecalculateTotalPrice()
 	{
-		ServiceTotalPrice = Services?.Sum(s => s.Price) ?? 0;
+		ServiceTotalPrice = Services?.Sum(s => s.Price * (ServiceType == ServiceType.Repeating ? RepeatingServiceCount : 1)) ?? 0;
 		ServiceTotalPriceInWords = PriceToWords.Convert(ServiceTotalPrice);
 	}
 }
